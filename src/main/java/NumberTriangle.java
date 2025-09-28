@@ -89,6 +89,19 @@ public class NumberTriangle {
      * @return the root value at the location indicated by path
      *
      */
+    public int retrieve(String path) {
+        NumberTriangle current = this;
+
+        char[] paths = path.toCharArray();
+        for (char c : paths) {
+            if (c == 'l') {
+                current = current.left;
+            } else if (c == 'r') {
+                current = current.right;
+            }
+        }
+        return current.getRoot();
+    }
 
 
     /**
@@ -147,5 +160,7 @@ public class NumberTriangle {
         // Problem 18 from project Euler [not for credit]
         mt.maxSumPath();
         System.out.println(mt.getRoot());
+        System.out.println(mt.left.getRoot());
+        System.out.println(mt.left.left.getRoot());
     }
 }
