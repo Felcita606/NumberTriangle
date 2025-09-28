@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is the provided NumberTriangle class to be used in this coding task.
@@ -57,9 +59,9 @@ public class NumberTriangle {
      * Set the root of this NumberTriangle to be the max path sum
      * of this NumberTriangle, as defined in Project Euler problem 18.
      * After this method is called, this NumberTriangle should be a leaf.
-     *
+     * <p>
      * Hint: think recursively and use the idea of partial tracing from first year :)
-     *
+     * <p>
      * Note: a NumberTriangle contains at least one value.
      */
     public void maxSumPath() {
@@ -87,16 +89,14 @@ public class NumberTriangle {
      * @return the root value at the location indicated by path
      *
      */
-    public int retrieve(String path) {
-        // TODO implement this method
-        return -1;
-    }
 
-    /** Read in the NumberTriangle structure from a file.
-     *
+
+    /**
+     * Read in the NumberTriangle structure from a file.
+     * <p>
      * You may assume that it is a valid format with a height of at least 1,
      * so there is at least one line with a number on it to start the file.
-     *
+     * <p>
      * See resources/input_tree.txt for an example NumberTriangle format.
      *
      * @param fname the file to load the NumberTriangle structure from
@@ -110,23 +110,30 @@ public class NumberTriangle {
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
 
 
-        // TODO define any variables that you want to use to store things
-
         // will need to return the top of the NumberTriangle,
         // so might want a variable for that.
-        NumberTriangle top = null;
+        NumberTriangle top = new NumberTriangle(Integer.parseInt(br.readLine()));
+        ArrayList<NumberTriangle> prevRow = new ArrayList<>();
+        prevRow.add(top);
 
         String line = br.readLine();
         while (line != null) {
+            String[] parts = line.split(" ");
+            ArrayList<NumberTriangle> curRow = new ArrayList<>();
+            for (String part : parts) {
+                curRow.add(new NumberTriangle(Integer.parseInt(part)));
+            }
 
-            // remove when done; this line is included so running starter code prints the contents of the file
-            System.out.println(line);
+            for (int i = 0; i < prevRow.size(); i++) {
+                NumberTriangle parent = prevRow.get(i);
+                parent.setLeft(curRow.get(i));
+                parent.setRight(curRow.get(i + 1));
+            }
 
-            // TODO process the line
-
-            //read the next line
+            prevRow = curRow;
             line = br.readLine();
         }
+
         br.close();
         return top;
     }
